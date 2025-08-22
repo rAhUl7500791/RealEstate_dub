@@ -1,27 +1,27 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL; // <-- use environment variable
-const API = `${BASE_URL}/properties/properties`;
+const API = "https://realestate-dub.onrender.com/properties/";
 
 export const listProperties = async () => {
-  const res = await axios.get(`${API}`);
+  const res = await axios.get(`${API}properties/`);
   return res.data;
 };
 
 export const createProperty = async (formData) => {
-  const res = await axios.post(`${API}`, formData, {
+  const res = await axios.post(`${API}properties/`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
 };
-
 export const uploadPropertyImages = async (propertyId, images) => {
   const formData = new FormData();
   images.forEach(img => formData.append("image", img));
   formData.append("property", propertyId);
 
-  const res = await axios.post(`${BASE_URL}/properties/property-images/`, formData, {
+  // ✅ correct URL
+  const res = await axios.post(`https://realestate-dub.onrender.com/properties/property-images/`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
 };
+
