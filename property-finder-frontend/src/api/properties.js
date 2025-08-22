@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL; // <-- use environment variable
-const API = `${BASE_URL}/properties/`;
+const API = `${BASE_URL}/properties/properties`;
 
 export const listProperties = async () => {
   const res = await axios.get(`${API}`);
