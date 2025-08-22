@@ -73,7 +73,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get(
             'DATABASE_URL',
-            'postgres://postgres_postgres_postgresathost_5432_user:ucjEoBTjkrVPIm2H4CLLQyBoszl91Fag@dpg-d2k8i8e3jp1c73fv82r0-a:5432/propfinder'
+            'postgres://postgres_postgres_postgresathost_5432_user:ucjEoBTjkrVPIm2H4CLLQyBoszl91Fag@dpg-d2k8i8e3jp1c73fv82r0-a:5432/postgres_postgres_postgresathost_5432'
         )
     )
 }
