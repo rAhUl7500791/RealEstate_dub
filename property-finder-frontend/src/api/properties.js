@@ -1,27 +1,28 @@
 import axios from "axios";
 
-// const API = "https://realestate-dub.onrender.com/properties/";
+// ✅ Use direct endpoints everywhere
+const PROPERTIES_API = "https://realestate-dub.onrender.com/properties/properties/";
+const PROPERTY_IMAGES_API = "https://realestate-dub.onrender.com/properties/property-images/";
 
 export const listProperties = async () => {
-  const res = await axios.get(`https://realestate-dub.onrender.com/properties/properties/`);
+  const res = await axios.get(PROPERTIES_API);
   return res.data;
 };
 
 export const createProperty = async (formData) => {
-  const res = await axios.post(`${API}properties/`, formData, {
+  const res = await axios.post(PROPERTIES_API, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
 };
+
 export const uploadPropertyImages = async (propertyId, images) => {
   const formData = new FormData();
-  images.forEach(img => formData.append("image", img));
+  images.forEach((img) => formData.append("image", img));
   formData.append("property", propertyId);
 
-  // ✅ correct URL
-  const res = await axios.post(`https://realestate-dub.onrender.com/properties/property-images/`, formData, {
+  const res = await axios.post(PROPERTY_IMAGES_API, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
 };
-
