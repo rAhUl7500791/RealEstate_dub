@@ -2,7 +2,7 @@ import axios from "axios";
 
 // ✅ Use direct endpoints everywhere
 const PROPERTIES_API = "https://realestate-dub.onrender.com/properties/properties/";
-const PROPERTY_IMAGES_API = "https://realestate-dub.onrender.com/properties/property-images/";
+const PROPERTY_IMAGES_API = "https://realestate-dub.onrender.com/properties/images/";
 
 export const listProperties = async () => {
   const res = await axios.get(PROPERTIES_API);
