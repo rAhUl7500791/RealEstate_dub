@@ -8,4 +8,3 @@ if __name__ == '__main__':
     except ImportError as exc:
         raise ImportError('Could not import Django.') from exc
     execute_from_command_line(sys.argv)
-g
