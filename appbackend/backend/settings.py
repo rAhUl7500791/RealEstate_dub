@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-import dj_database_url  # Make sure to install: pip install dj-database-url
+import dj_database_url  # pip install dj-database-url
 
 # ---------------- BASE ----------------
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,7 +11,7 @@ SECRET_KEY = os.environ.get(
     'kv2i99mc^=u5ii9y^_x$^lt#2_-(%23ihuq9hnm4&ol)$x*2_$'
 )
 DEBUG = False
-ALLOWED_HOSTS = ["realestate-dub-1.onrender.com"]  # Your Render frontend URL
+ALLOWED_HOSTS = ["realestate-dub-1.onrender.com"]
 
 # ---------------- APPS ----------------
 INSTALLED_APPS = [
@@ -24,8 +24,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
-    "users",        # Your custom app
-    "properties",   # Your custom app
+    "users",
+    "properties",
 ]
 
 # ---------------- MIDDLEWARE ----------------
@@ -51,7 +51,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # Add template dirs if needed
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,12 +68,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "backend.wsgi.application"
 
 # ---------------- DATABASE ----------------
-# Use DATABASE_URL from Render environment variables
+# Use DATABASE_URL from env if set, otherwise fallback to given connection string
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get(
             'DATABASE_URL',
-            'postgres://postgres:postgres@localhost:5432/propfinder'
+            'postgres://postgres:postgres@host:5432/propfinder'
         )
     )
 }
@@ -103,9 +103,11 @@ USE_TZ = True
 
 # ---------------- STATIC & MEDIA ----------------
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # for collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Only include this if you actually have a /static folder locally
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),  # local static folder if exists
+    os.path.join(BASE_DIR, "static"),
 ]
 
 MEDIA_URL = "/media/"
