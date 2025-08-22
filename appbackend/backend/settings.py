@@ -8,21 +8,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ---------------- SECURITY ----------------
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
-    "kv2i99mc^=u5ii9y^_x$^lt#2_-(%23ihuq9hnm4&ol)$x*2_$"  # fallback only for dev
+    "kv2i99mc^=u5ii9y^_x$^lt#2_-(%23ihuq9hnm4&ol)$x*2_$"  # fallback only for local dev
 )
-
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-# Hosts allowed (backend URL must be included)
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",") or [
-    "realestate-dub-1.onrender.com",
-    "www.realestate-dub-1.onrender.com",
-    "localhost",
-    "127.0.0.1",
-]
-
-# Render needs this to trust HTTPS headers
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "realestate-dub-1.onrender.com").split(",")
 
 # ---------------- APPS ----------------
 INSTALLED_APPS = [
@@ -41,10 +31,9 @@ INSTALLED_APPS = [
 
 # ---------------- MIDDLEWARE ----------------
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # for static files on Render
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -53,9 +42,14 @@ MIDDLEWARE = [
 ]
 
 # ---------------- CORS ----------------
-CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",") or [
-    "https://realestate-dub-1.onrender.com",
-]
+cors_origins = os.environ.get("CORS_ALLOWED_ORIGINS")
+
+if cors_origins:
+    CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins.split(",") if origin.strip()]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "https://realestate-dub-1.onrender.com",
+    ]
 
 # ---------------- TEMPLATES ----------------
 ROOT_URLCONF = "backend.urls"
@@ -81,9 +75,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # ---------------- DATABASE ----------------
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600,  # keep connections alive
-        ssl_require=True,
+        default=os.environ.get("DATABASE_URL")
     )
 }
 
@@ -114,11 +106,9 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# If you actually have a static/ folder, uncomment this
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
-# WhiteNoise config for serving static files
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Only add this if you actually have a /static folder locally
+if os.path.exists(os.path.join(BASE_DIR, "static")):
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
