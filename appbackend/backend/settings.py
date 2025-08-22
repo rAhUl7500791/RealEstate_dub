@@ -4,6 +4,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'your-secret-key'
 DEBUG = True
 ALLOWED_HOSTS = []
+STATIC_URL = '/static/'
+
+# deployment ke liye extra
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # agar tu static/ folder bana ke rakha hai
+]
 INSTALLED_APPS = [
      "corsheaders",
     'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
