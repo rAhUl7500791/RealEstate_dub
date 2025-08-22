@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 asgiref==3.9.1
 certifi==2025.8.3
 charset-normalizer==3.4.3
@@ -19,3 +20,15 @@ urllib3==2.5.0
 gunicorn
 whitenoise
 pillow
+=======
+Django>=5.0
+djangorestframework>=3.15
+djangorestframework-simplejwt>=5.3
+psycopg2-binary>=2.9
+django-cors-headers>=4.3
+stripe>=7.0
+python-dotenv>=1.0
+gunicorn
+whitenoise
+pillow
+>>>>>>> cf7551513290d6f0659e739dfe97a219c166e18c
