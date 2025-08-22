@@ -12,7 +12,8 @@ SECRET_KEY = os.environ.get(
 )
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "realestate-dub-1.onrender.com").split(",")
+
+ALLOWED_HOSTS = ["*"]
 
 # ---------------- APPS ----------------
 INSTALLED_APPS = [
