@@ -1,75 +1,116 @@
 import os
 from pathlib import Path
-BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'your-secret-key'
-DEBUG = False
-ALLOWED_HOSTS = ["*"]
-STATIC_URL = '/static/'
+import dj_database_url  # Make sure to install: pip install dj-database-url
 
-# deployment ke liye extra
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # agar tu static/ folder bana ke rakha hai
-]
+# ---------------- BASE ----------------
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# ---------------- SECURITY ----------------
+SECRET_KEY = 'kv2i99mc^=u5ii9y^_x$^lt#2_-(%23ihuq9hnm4&ol)$x*2_$'
+DEBUG = False
+ALLOWED_HOSTS = ["realestate-dub-1.onrender.com"]  # Your Render frontend URL
+
+# ---------------- APPS ----------------
 INSTALLED_APPS = [
-     "corsheaders",
-    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
-    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',
-    'rest_framework', 'rest_framework_simplejwt', 'users', 'properties'
+    "corsheaders",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "users",        # Your custom app
+    "properties",   # Your custom app
 ]
-AUTH_USER_MODEL = 'users.CustomUser'
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
+
+# ---------------- MIDDLEWARE ----------------
 MIDDLEWARE = [
-      "corsheaders.middleware.CorsMiddleware",  
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# ---------------- CORS ----------------
 CORS_ALLOWED_ORIGINS = [
     "https://realestate-dub-1.onrender.com",
 ]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"
+# ---------------- TEMPLATES ----------------
+ROOT_URLCONF = "backend.urls"
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],  # Add template dirs if needed
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
+# ---------------- WSGI ----------------
+WSGI_APPLICATION = "backend.wsgi.application"
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-ROOT_URLCONF = 'backend.urls'
-TEMPLATES = [{
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [], 'APP_DIRS': True,
-    'OPTIONS': {'context_processors': [
-        'django.template.context_processors.debug',
-        'django.template.context_processors.request',
-        'django.contrib.auth.context_processors.auth',
-        'django.contrib.messages.context_processors.messages',
-    ]},
-}]
-WSGI_APPLICATION = 'backend.wsgi.application'
+# ---------------- DATABASE ----------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'propfinder',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
 
+# ---------------- AUTH ----------------
+AUTH_USER_MODEL = "users.CustomUser"
 
-AUTH_PASSWORD_VALIDATORS = []
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+# ---------------- PASSWORD VALIDATORS ----------------
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+# ---------------- INTERNATIONALIZATION ----------------
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = '/static/'
+
+# ---------------- STATIC & MEDIA ----------------
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),  # if you have a local static folder
+]
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# ---------------- DEFAULT AUTO FIELD ----------------
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -19,3 +19,6 @@ urllib3==2.5.0
 gunicorn
 whitenoise
 pillow
+dj-database-url
+dj-database-url psycopg2-binary
+
