@@ -10,14 +10,19 @@ SECRET_KEY = os.environ.get(
     "SECRET_KEY",
     "kv2i99mc^=u5ii9y^_x$^lt#2_-(%23ihuq9hnm4&ol)$x*2_$"  # fallback only for dev
 )
-DEBUG = False
 
-ALLOWED_HOSTS = [
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+
+# Hosts allowed (backend URL must be included)
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",") or [
     "realestate-dub-1.onrender.com",
     "www.realestate-dub-1.onrender.com",
     "localhost",
     "127.0.0.1",
 ]
+
+# Render needs this to trust HTTPS headers
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # ---------------- APPS ----------------
 INSTALLED_APPS = [
@@ -36,9 +41,10 @@ INSTALLED_APPS = [
 
 # ---------------- MIDDLEWARE ----------------
 MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # for static files on Render
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -47,7 +53,7 @@ MIDDLEWARE = [
 ]
 
 # ---------------- CORS ----------------
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",") or [
     "https://realestate-dub-1.onrender.com",
 ]
 
@@ -75,7 +81,9 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # ---------------- DATABASE ----------------
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL")
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,  # keep connections alive
+        ssl_require=True,
     )
 }
 
@@ -106,8 +114,11 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# remove STATICFILES_DIRS if you don’t actually have a /static folder
+# If you actually have a static/ folder, uncomment this
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+# WhiteNoise config for serving static files
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
