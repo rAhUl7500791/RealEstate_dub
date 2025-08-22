@@ -6,7 +6,10 @@ import dj_database_url  # Make sure to install: pip install dj-database-url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ---------------- SECURITY ----------------
-SECRET_KEY = 'kv2i99mc^=u5ii9y^_x$^lt#2_-(%23ihuq9hnm4&ol)$x*2_$'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'kv2i99mc^=u5ii9y^_x$^lt#2_-(%23ihuq9hnm4&ol)$x*2_$'
+)
 DEBUG = False
 ALLOWED_HOSTS = ["realestate-dub-1.onrender.com"]  # Your Render frontend URL
 
@@ -65,9 +68,13 @@ TEMPLATES = [
 WSGI_APPLICATION = "backend.wsgi.application"
 
 # ---------------- DATABASE ----------------
+# Use DATABASE_URL from Render environment variables
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
+        default=os.environ.get(
+            'DATABASE_URL',
+            'postgres://postgres:postgres@localhost:5432/propfinder'
+        )
     )
 }
 
@@ -82,18 +89,10 @@ REST_FRAMEWORK = {
 
 # ---------------- PASSWORD VALIDATORS ----------------
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # ---------------- INTERNATIONALIZATION ----------------
@@ -104,9 +103,9 @@ USE_TZ = True
 
 # ---------------- STATIC & MEDIA ----------------
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # for collectstatic
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),  # if you have a local static folder
+    os.path.join(BASE_DIR, "static"),  # local static folder if exists
 ]
 
 MEDIA_URL = "/media/"
