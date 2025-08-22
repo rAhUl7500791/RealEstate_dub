@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://realestate-dub.onrender.com',
+  baseURL: import.meta.env.VITE_API_BASE_URL, // will now point to deployed backend
   withCredentials: false
 })
 
