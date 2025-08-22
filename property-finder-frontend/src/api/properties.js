@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API = "https://realestate-dub.onrender.com/properties/";
+// const API = "https://realestate-dub.onrender.com/properties/";
 
 export const listProperties = async () => {
-  const res = await axios.get(`${API}properties/`);
+  const res = await axios.get(`https://realestate-dub.onrender.com/properties/properties/`);
   return res.data;
 };
 
