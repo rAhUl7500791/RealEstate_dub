@@ -1,7 +1,7 @@
 // api/properties.js
 import axios from "axios";
 
-const API = "http://127.0.0.1:8000/properties/";
+const API = "https://realestate-dub.onrender.com/properties/";
 
 export const listProperties = async () => {
   const res = await axios.get(`${API}properties/`);
@@ -20,7 +20,7 @@ export const uploadPropertyImages = async (propertyId, images) => {
   formData.append("property", propertyId);
 
   // ✅ correct URL
-  const res = await axios.post(`http://127.0.0.1:8000/properties/property-images/`, formData, {
+  const res = await axios.post(`https://realestate-dub.onrender.com/properties/property-images/`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
