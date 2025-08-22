@@ -11,7 +11,18 @@ SECRET_KEY = os.environ.get(
     "kv2i99mc^=u5ii9y^_x$^lt#2_-(%23ihuq9hnm4&ol)$x*2_$"  # fallback only for local dev
 )
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
-
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
+    ],
+    "URL_FORMAT_OVERRIDE": None,
+    "APPEND_SLASH": False,  # 👈 important
+}
 
 ALLOWED_HOSTS = ["*"]
 
