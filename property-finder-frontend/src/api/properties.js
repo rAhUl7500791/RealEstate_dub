@@ -2,7 +2,7 @@ import axios from "axios";
 
 // 🔹 Backend endpoints
 const PROPERTIES_API = "https://realestate-dub.onrender.com/properties/properties/";
-const PROPERTY_IMAGES_API = "https://realestate-dub.onrender.com/properties/images/";
+const PROPERTY_IMAGES_API = "https://realestate-dub.onrender.com/properties/property-images/";
 
 // 🏠 List properties
 export const listProperties = async () => {
